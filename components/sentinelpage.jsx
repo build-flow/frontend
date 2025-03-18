@@ -37,7 +37,7 @@ export default function SentinelHomepage() {
         <h3 className="text-3xl text-center font-semibold mb-8">Key Features</h3>
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           <FeatureCard icon={<FaShieldAlt />} title="Project Management" description="View your project timelines." />
-          <FeatureCard icon={<FaRobot />} title="Lbor Management" description="Create records of labor and automate bulk payments." />
+          <FeatureCard icon={<FaRobot />} title="Labor Management" description="Create records of labor and automate bulk payments." />
           <FeatureCard icon={<FaSync />} title="Expense Tracking" description="Get detailed reports on expenses spent on materials and labor" />
         </div>
       </section>
