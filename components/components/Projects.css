@@ -1,0 +1,54 @@
+.projects {
+    padding: 40px;
+    margin: 0 auto;
+    max-width: 1200px; /* Adjust max-width to match the content width of other pages */
+  }
+  
+  .projects-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .projects-section {
+    margin-bottom: 40px;
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .projects-list {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .project-card {
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .project-card img,
+  .project-card svg {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    color: #333; /* Adjust icon color if needed */
+  }
+  
+  .project-card p {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .project-card:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s;
+  }

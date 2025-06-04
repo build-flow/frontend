@@ -1,0 +1,65 @@
+.profile {
+    padding: 20px;
+  }
+  
+  .profile-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .profile-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  .update-btn {
+    padding: 10px 20px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin: 20px auto 0;
+  }
+  
+  .update-btn:hover {
+    background-color: #333;
+  }
+  
+  .success-message {
+    color: #00C4B4;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 10px;
+  }

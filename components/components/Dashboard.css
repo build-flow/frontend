@@ -1,0 +1,303 @@
+.dashboard {
+  padding: 0; /* Remove padding to minimize white space */
+}
+
+/* Ensure the actions (Add Unit and view toggle) are at the top */
+.dashboard-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px; /* Space between buttons and content below */
+  padding: 10px 0; /* Minimal padding to align with the content */
+}
+
+.add-unit-btn {
+  padding: 10px 20px;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.add-unit-btn:hover {
+  background-color: #333;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 10px;
+  background-color: #000;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.view-toggle button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.view-toggle button.active {
+  background-color: #666;
+}
+
+/* Calendar View Styles */
+.gantt-chart {
+  border: 1px solid #ddd;
+}
+
+.gantt-header {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  background-color: #f5f5f5;
+}
+
+.gantt-row {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+}
+
+.gantt-label {
+  width: 100px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-right: 1px solid #ddd;
+}
+
+.gantt-day {
+  width: 30px;
+  text-align: center;
+  padding: 5px;
+  font-size: 14px;
+  border-right: 1px solid #ddd;
+}
+
+.gantt-timeline {
+  display: flex;
+  flex: 1;
+}
+
+.gantt-cell {
+  width: 30px;
+  height: 40px;
+  border-right: 1px solid #ddd;
+  position: relative;
+}
+
+.gantt-task {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  height: 20px;
+}
+
+/* Unit View Styles */
+.unit-view {
+  margin-top: 0; /* Remove extra margin */
+}
+
+.unit-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+.unit-table th,
+.unit-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.unit-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.unit-table td {
+  color: #333;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.status.completed {
+  background-color: #00C4B4;
+  color: white;
+}
+
+.status.in-progress {
+  background-color: #FFD700;
+  color: #333;
+}
+
+.status.not-started {
+  background-color: #FF6347;
+  color: white;
+}
+
+/* Kanban View Styles */
+.kanban-view {
+  margin-top: 0; /* Remove extra margin */
+}
+
+.kanban-board {
+  display: flex;
+  gap: 20px;
+}
+
+.kanban-column {
+  flex: 1;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  min-height: 400px;
+}
+
+.kanban-column-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.kanban-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.kanban-card h4 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.kanban-card p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.kanban-status-bar {
+  height: 5px;
+  border-radius: 3px;
+}
+
+/* Modal Styles */
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 500px;
+  margin: 50px auto;
+  position: relative;
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.save-btn {
+  padding: 10px 20px;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.save-btn:hover {
+  background-color: #333;
+}
+
+.cancel-btn {
+  padding: 10px 20px;
+  background-color: #666;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.cancel-btn:hover {
+  background-color: #555;
+}
+
+.success-message {
+  color: #00C4B4;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 10px;
+}
