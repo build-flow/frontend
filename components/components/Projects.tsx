@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { FaBuilding } from 'react-icons/fa';
+import { FaBuilding, FaPlus } from 'react-icons/fa';
 import './Projects.css';
 import { getToken } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { Button } from '../ui/button';
 
 function Projects() {
   const [completedProjects, setCompletedProjects] = useState([]);
@@ -23,6 +24,13 @@ function Projects() {
     <div className="projects">
       <h2 className="projects-title">Projects</h2>
       {error && <p className="error-message">{error}</p>}
+
+      <div className='my-4'>
+        <Button>
+          Create Project
+          <FaPlus />
+        </Button>
+      </div>
       <div className="projects-section">
         <h3 className="section-title">Completed Projects</h3>
         <div className="projects-list">
