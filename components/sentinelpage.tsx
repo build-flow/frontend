@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { FaShieldAlt, FaRobot, FaSync, FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
 
 export default function SentinelHomepage() {
   return (
