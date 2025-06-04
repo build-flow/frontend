@@ -3,17 +3,21 @@
 import React, { useState, useEffect } from 'react';
 import { FaBuilding } from 'react-icons/fa';
 import './Projects.css';
+import { getToken } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 function Projects() {
   const [completedProjects, setCompletedProjects] = useState([]);
   const [inProgressProjects, setInProgressProjects] = useState([]);
   const [error, setError] = useState('');
+  const router = useRouter();
+  const token = getToken();
 
   useEffect(() => {
-    const fetchProjects = async () => {
-    };
-    fetchProjects();
-  }, []);
+    if (!token) {
+      router.push('/auth/signin')
+    }
+  }, [token]);
 
   return (
     <div className="projects">

@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { setToken } from '@/lib/utils';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
+import { toast } from 'sonner';
 
 const validationSchema = z.object({
   email: z.string().email().min(1, "This field is required!"),
@@ -21,12 +23,21 @@ function Login() {
     mutationKey: ['user'],
     mutationFn: (data: any) => login(data),
     onSuccess: (data: any) => {
-      router.push('/app'),
-        setToken(data.access_token)
-    }
+      setToken(data.access_token);
+      toast.success("Login Successful!");
+      router.push('/app');
+    },
+    onError: (error: any) => {
+    toast.error(error.message || 'Login failed');
+  }
   });
 
-  const { handleSubmit, getValues, formState: { isSubmitting, isValid }, register } = useForm({
+  const { 
+    handleSubmit,
+    getValues,
+    formState: { isSubmitting, isValid, errors },
+    register
+  } = useForm({
     mode: "onChange",
     defaultValues: {
       email: "",
@@ -52,6 +63,7 @@ function Login() {
             {...register("email")}
             required
           />
+          {errors.email && <p className='text-sm text-red-500'>{errors.email.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
@@ -61,11 +73,19 @@ function Login() {
             {...register("password")}
             required
           />
+          {errors.password && <p className='text-sm text-red-500'>{errors.password.message}</p>}
         </div>
-        <button type="submit" className="login-btn">
+        <button
+          type="submit"
+          className="w-full py-2 px-4 rounded bg-black text-white font-bold mt-2 cursor-pointer disabled:cursor-not-allowed disabled:bg-black/60"
+          disabled={!isValid}
+        >
           Log In
         </button>
       </form>
+      <div className='my-4 font-medium'>
+        <p>Don't have an account? <Link href="/auth/signup" className='text-blue-500'>Sign Up</Link></p>
+      </div>
     </div>
   );
 }

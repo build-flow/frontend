@@ -8,6 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query';
 import { handleRegistration } from '@/data/mutations';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { toast } from 'sonner';
 
 const validationSchema = z.object({
   company_name: z.string().min(1, "This field is required"),
@@ -24,9 +26,9 @@ const validationSchema = z.object({
   bank_account_number: z.string().min(1, "This field is required"),
   bank_number: z.string().min(1, "This field is required"),
   business_code: z.string().min(1, "This field is required"),
-  client_id: z.string().min(1, "This field is required"),
-  client_secret: z.string().min(1, "This field is required"),
-  api_key: z.string().min(1, "This field is required")
+  client_id: z.string().optional(),
+  client_secret: z.string().optional(),
+  api_key: z.string().optional()
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords do not match",
   path: ["confirmPassword"]
@@ -55,7 +57,7 @@ function Register() {
     register,
     handleSubmit,
     getValues,
-    formState: { isDirty, isSubmitting, isValid }
+    formState: { isDirty, isSubmitting, isValid, errors },
   } = useForm({
     mode: "onChange",
     defaultValues: defaultFormData,
@@ -68,7 +70,11 @@ function Register() {
     mutationKey: ['user'],
     mutationFn: (data) => handleRegistration(data),
     onSuccess: (data: any) => {
-      router.push('/auth/login');
+      router.push('/auth/signin');
+      toast.success('Account created successfully!')
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Registration failed');
     }
   });
 
@@ -89,6 +95,7 @@ function Register() {
             {...register("company_name")}
             required
           />
+          {errors.company_name && <p className='text-sm text-red-500'>{errors.company_name.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="email">Company Email</label>
@@ -98,6 +105,7 @@ function Register() {
             {...register("email")}
             required
           />
+          {errors.email && <p className='text-sm text-red-500'>{errors.email.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="phone_number">Phone Number</label>
@@ -107,6 +115,7 @@ function Register() {
             {...register("phone_number")}
             required
           />
+          {errors.phone_number && <p className='text-sm text-red-500'>{errors.phone_number.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="bank_account_number">Bank Account Number</label>
@@ -116,6 +125,7 @@ function Register() {
             {...register("bank_account_number")}
             required
           />
+          {errors.bank_account_number && <p className='text-sm text-red-500'>{errors.bank_account_number.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="bank_number">Bank Number</label>
@@ -125,6 +135,7 @@ function Register() {
             {...register("bank_number")}
             required
           />
+          {errors.bank_number && <p className='text-sm text-red-500'>{errors.bank_number.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="business_code">Business Code</label>
@@ -134,6 +145,7 @@ function Register() {
             {...register("business_code")}
             required
           />
+          {errors.business_code && <p className='text-sm text-red-500'>{errors.business_code.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
@@ -143,6 +155,7 @@ function Register() {
             {...register("password")}
             required
           />
+          {errors.password && <p className='text-sm text-red-500'>{errors.password.message}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirm Password</label>
@@ -152,11 +165,19 @@ function Register() {
             {...register("confirmPassword")}
             required
           />
+          {errors.confirmPassword && <p className='text-sm text-red-500'>{errors.confirmPassword.message}</p>}
         </div>
-        <button type="submit" className="register-btn">
+        <button
+          type="submit"
+          className="w-full py-2 px-4 rounded bg-black text-white font-bold mt-2 disabled:cursor-not-allowed disabled:bg-black/60 cursor-pointer"
+          disabled={!isValid}
+        >
           Register
         </button>
       </form>
+      <div className='my-4 font-medium'>
+        <p>Already have an account? <Link href="/auth/signin" className='text-blue-500'>Sign In</Link></p>
+      </div>
     </div>
   );
 }

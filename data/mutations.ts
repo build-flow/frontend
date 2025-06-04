@@ -7,7 +7,7 @@ export async function handleRegistration(data: any) {
     const response = await axios.post(`${API_URL}/register`, data);
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Registration failed');
   }
 }
 
@@ -16,7 +16,7 @@ export async function login(data: any) {
     const response = await axios.post(`${API_URL}/login`, data);
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Login failed');
   }
 }
 

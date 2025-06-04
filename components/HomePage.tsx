@@ -4,6 +4,7 @@ import { FaShieldAlt, FaRobot, FaSync, FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
+import Link from "next/link";
 
 export default function SentinelHomepage() {
   return (
@@ -29,7 +30,7 @@ export default function SentinelHomepage() {
         <p className="text-gray-400 max-w-2xl mx-auto mb-6">
         BuildFlow eliminates the chaos of traditional construction management by digitizing workflows, centralizing information, and automating critical processes - saving time, reducing costs, and dramatically improving project outcomes.
         </p>
-        <Button className="bg-blue-500 hover:bg-blue-600 px-6 py-3 text-lg">See BuildFlow in Action</Button>
+        <Link href="/app" className="bg-blue-500 hover:bg-blue-600 px-6 py-3 text-lg rounded-2xl">See BuildFlow in Action</Link>
       </section>
       
       {/* Features Section */}
@@ -55,7 +56,7 @@ export default function SentinelHomepage() {
       {/* CTA Section */}
       <section className="py-16 bg-blue-600 text-center">
         <h3 className="text-3xl font-semibold mb-4">Streamline your construction management today.</h3>
-        <Button className="bg-gray-900 hover:bg-gray-800 px-6 py-3 text-lg">Get a Free Demo</Button>
+        <Link href="/app" className="bg-gray-900 hover:bg-gray-800 px-6 py-3 text-lg  rounded-2xl">Get a Free Demo</Link>
       </section>
       
       {/* Footer */}
@@ -71,7 +72,7 @@ function FeatureCard({ icon, title, description }) {
     <Card className="p-6 text-center bg-gray-700">
       <CardContent>
         <div className="text-4xl text-blue-400 mb-4">{icon}</div>
-        <h4 className="text-xl font-semibold mb-2">{title}</h4>
+        <h4 className="text-xl font-semibold mb-2 text-white">{title}</h4>
         <p className="text-gray-300">{description}</p>
       </CardContent>
     </Card>
@@ -83,7 +84,7 @@ function StepCard({ step, title, description }) {
     <Card className="p-6 text-center bg-gray-700">
       <CardContent>
         <div className="text-5xl font-bold text-blue-400 mb-2">{step}</div>
-        <h4 className="text-xl font-semibold mb-2">{title}</h4>
+        <h4 className="text-xl font-semibold mb-2 text-white">{title}</h4>
         <p className="text-gray-300">{description}</p>
       </CardContent>
     </Card>
