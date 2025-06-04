@@ -1,7 +1,8 @@
-import { API_URL, getToken } from '@/constants';
+import { API_URL } from '@/constants';
+import { getToken } from '@/lib/utils';
 import axios from 'axios'
 
-export async function register(data: any) {
+export async function handleRegistration(data: any) {
   try {
     const response = await axios.post(`${API_URL}/register`, data);
     return response.data;

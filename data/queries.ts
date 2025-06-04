@@ -1,4 +1,5 @@
-import { API_URL, getToken } from "@/constants";
+import { API_URL } from "@/constants";
+import { getToken } from "@/lib/utils";
 import axios from "axios";
 
 export async function getCompany() {
