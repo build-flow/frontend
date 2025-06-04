@@ -1,9 +1,9 @@
-import SentinelHomepage from "@/components/sentinelpage";
+import SentinelHomepage from "@/components/HomePage";
 
 export default function Home() {
   return (
     <div className="">
-        <SentinelHomepage />
+      <SentinelHomepage />
     </div>
   );
 }
