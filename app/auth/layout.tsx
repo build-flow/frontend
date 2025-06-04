@@ -1,8 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import QueryProvider from "@/context/QueryProvider";
-import Header from "@/components/components/Header";
-import Sidebar from "@/components/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,13 +24,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-          <div>
-            <Header />
-            <div className="flex gap-4">
-              <Sidebar />
-              {children}
-            </div>
-          </div>
+          {children}
         </QueryProvider>
       </body>
     </html>

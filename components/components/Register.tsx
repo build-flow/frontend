@@ -1,6 +1,6 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../api/api';
 import './Register.css';
 
 function Register() {
@@ -12,7 +12,6 @@ function Register() {
     confirmPassword: '',
   });
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,21 +30,7 @@ function Register() {
       return;
     }
 
-    try {
-      const response = await registerUser({
-        company_name: formData.companyName, // Laravel uses snake_case
-        email: formData.companyEmail,
-        phone_number: formData.phoneNumber,
-        password: formData.password,
-      });
-      if (response.data.success) {
-        navigate('/login');
-      } else {
-        setError(response.data.message || 'Registration failed. Please try again.');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during registration.');
-    }
+    
   };
 
   return (

@@ -1,6 +1,7 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import { addUnit, getUnits } from '../api/api';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -18,16 +19,6 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchUnits = async () => {
-      try {
-        const response = await getUnits();
-        if (response.data.success) {
-          setUnits(response.data.data || []);
-        } else {
-          setError(response.data.message || 'Failed to load units.');
-        }
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load units.');
-      }
     };
     fetchUnits();
   }, []);
@@ -98,27 +89,6 @@ function Dashboard() {
   };
 
   const handleSaveUnit = async () => {
-    try {
-      const response = await addUnit({
-        name: newUnit.name,
-        type: newUnit.type,
-        start_date: newUnit.startDate,
-        end_date: newUnit.endDate,
-        status: 'Not Started',
-      });
-      if (response.data.success) {
-        setUnits((prevUnits) => [...prevUnits, response.data.data]);
-        setSuccessMessage('Saved successfully');
-        setTimeout(() => {
-          closeModal();
-          setSuccessMessage('');
-        }, 1000);
-      } else {
-        setError(response.data.message || 'Failed to save unit.');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred while saving the unit.');
-    }
   };
 
   return (

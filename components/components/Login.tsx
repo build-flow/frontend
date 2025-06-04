@@ -1,6 +1,6 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../api/api';
 import './Login.css';
 
 function Login() {
@@ -9,7 +9,6 @@ function Login() {
     password: '',
   });
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,20 +22,6 @@ function Login() {
     e.preventDefault();
     setError('');
 
-    try {
-      const response = await loginUser({
-        email: formData.companyEmail,
-        password: formData.password,
-      });
-      if (response.data.success && response.data.token) {
-        localStorage.setItem('token', response.data.token); // Store Sanctum token
-        navigate('/projects');
-      } else {
-        setError(response.data.message || 'Login failed. Please check your credentials.');
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during login.');
-    }
   };
 
   return (
