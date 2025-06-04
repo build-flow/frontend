@@ -2,41 +2,54 @@
 
 import React, { useState } from 'react';
 import './Login.css';
+import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '@/data/mutations';
+import { useRouter } from 'next/navigation';
+import { setToken } from '@/lib/utils';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const validationSchema = z.object({
+  email: z.string().email().min(1, "This field is required!"),
+  password: z.string().min(1, "This field is required!")
+});
 
 function Login() {
-  const [formData, setFormData] = useState({
-    companyEmail: '',
-    password: '',
+  const router = useRouter();
+  const { mutate, data: userData } = useMutation({
+    mutationKey: ['user'],
+    mutationFn: (data: any) => login(data),
+    onSuccess: (data: any) => {
+      router.push('/app'),
+        setToken(data.access_token)
+    }
   });
-  const [error, setError] = useState('');
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  const { handleSubmit, getValues, formState: { isSubmitting, isValid }, register } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      password: ""
+    },
+    resolver: zodResolver(validationSchema)
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-
-  };
+  function onSubmit() {
+    const data = getValues();
+    mutate(data)
+  }
 
   return (
     <div className="login">
       <h2 className="login-title">Log In</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form className="login-form" onSubmit={handleSubmit}>
+      <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="companyEmail">Company Email</label>
           <input
             type="email"
             id="companyEmail"
-            name="companyEmail"
-            value={formData.companyEmail}
-            onChange={handleInputChange}
+            {...register("email")}
             required
           />
         </div>
@@ -45,9 +58,7 @@ function Login() {
           <input
             type="password"
             id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
+            {...register("password")}
             required
           />
         </div>
