@@ -19,7 +19,7 @@ function Sidebar() {
   ];
 
   return (
-    <div className={`sidebar ${pathname === "/app" && "hidden"}`}>
+    <div className={`sidebar ${(pathname === "/app") && "hidden"}`}>
       <ul className="nav-list">
         {links.map(link => (
           <li

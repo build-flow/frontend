@@ -30,7 +30,7 @@ function Profile() {
   };
 
   return (
-    <div className="profile">
+    <div className="flex p-4 flex-col justify-center items-center">
       <h2 className="profile-title">Profile</h2>
       <div className="profile-form">
         <div className="form-group">
