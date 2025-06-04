@@ -131,7 +131,7 @@ export async function deleteProject(projectId: string) {
 export async function detachWorker(projectId: string, idNumber: number) {
   try {
     const token = getToken();
-    const response = await axios.get(`${API_URL}/projects/${projectId}/workers/${idNumber}`, {
+    const response = await axios.delete(`${API_URL}/projects/${projectId}/workers/${idNumber}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -145,7 +145,35 @@ export async function detachWorker(projectId: string, idNumber: number) {
 export async function detachMaterial(projectId: string, materialId: string) {
   try {
     const token = getToken();
-    const response = await axios.get(`${API_URL}/projects/${projectId}/workers/${materialId}`, {
+    const response = await axios.delete(`${API_URL}/projects/${projectId}/workers/${materialId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function deleteWorker(idNumber: number) {
+  try {
+    const token = getToken();
+    const response = await axios.delete(`${API_URL}/workers/${idNumber}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function deleteMaterial(materialId: string) {
+  try {
+    const token = getToken();
+    const response = await axios.delete(`${API_URL}/materials/${materialId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
