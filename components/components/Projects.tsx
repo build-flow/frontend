@@ -1,6 +1,6 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getProjects } from '../api/api';
 import { FaBuilding } from 'react-icons/fa';
 import './Projects.css';
 
@@ -8,30 +8,12 @@ function Projects() {
   const [completedProjects, setCompletedProjects] = useState([]);
   const [inProgressProjects, setInProgressProjects] = useState([]);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjects = async () => {
-      try {
-        const response = await getProjects();
-        if (response.data.success) {
-          setCompletedProjects(response.data.data.completed || []);
-          setInProgressProjects(response.data.data.in_progress || []);
-        } else {
-          setError(response.data.message || 'Failed to load projects.');
-        }
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load projects.');
-      }
     };
     fetchProjects();
   }, []);
-
-  const handleProjectClick = (project) => {
-    if (completedProjects.some((p) => p.id === project.id)) {
-      navigate('/dashboard');
-    }
-  };
 
   return (
     <div className="projects">
@@ -45,7 +27,6 @@ function Projects() {
               <div
                 key={project.id}
                 className="project-card"
-                onClick={() => handleProjectClick(project)}
               >
                 <FaBuilding className="project-icon" />
                 <p>{project.name}</p>

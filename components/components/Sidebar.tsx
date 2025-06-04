@@ -3,14 +3,42 @@
 import React, { useState } from 'react';
 import './Sidebar.css';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 function Sidebar() {
   const [activeLink, setActiveLink] = useState(location.pathname);
-
+  const params = useParams();
   const handleLinkClick = (path) => {
     setActiveLink(path);
   };
 
+  const projectId = params.projectId as string | undefined;
+
+  const links = projectId
+    ? [
+      { href: `/app/project/${projectId}/workers`, icon: "🔨", name: "Workers" },
+      { href: `/app/project/${projectId}/materials`, icon: "📦", name: "Materials" },
+      { href: `/app/project/${projectId}/payment`, icon: "💳", name: "Payment" },
+      { href: `/profile`, icon: "🧑", name: "Profile" }
+    ]
+    : [];
+
+  return (
+    <div className="sidebar">
+      <ul className="nav-list">
+        {links.map(link => (
+          <li
+            key={link.href}
+            className={`nav-item ${activeLink === link.href ? 'active' : ''}`}
+            onClick={() => handleLinkClick(link.href)}
+          >
+            <span role="img" aria-label={link.name.toLowerCase()}>{link.icon}</span>
+            <Link href={link.href}>{link.name}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
   return (
     <div className="sidebar">
       <ul className="nav-list">
