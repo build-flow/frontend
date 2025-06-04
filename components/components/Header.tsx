@@ -1,15 +1,14 @@
 import React from 'react';
 import './Header.css';
+import ProfileImage from '../ProfileImage';
 
 function Header() {
   return (
     <header className="header">
       <div className="logo">BuildFlow.</div>
-      <div className="profile-icon">
-        <span role="img" aria-label="profile">
-          🧑
-        </span>
-      </div>
+        <div>
+          <ProfileImage />
+        </div>
     </header>
   );
 }
