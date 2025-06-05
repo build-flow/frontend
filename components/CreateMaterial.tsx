@@ -7,8 +7,14 @@ type props = {
 
 const CreateMaterial = ({ closeModal, shown } : props) => {
   return (
-    <div>
-      <div>
+    <div
+      className='flex justify-center items-center fixed inset-0 z-50'
+      onClick={closeModal}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className='bg-white rounded-lg shadow-lg p-8 min-w-[320px] w-full max-w-md max-h-[90vh] overflow-auto'
+      >
         <h2>Add New Material</h2>
         <div className="modal-form">
           <div className="form-group">

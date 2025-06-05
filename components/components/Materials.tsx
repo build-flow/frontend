@@ -57,7 +57,7 @@ function Materials() {
       unitPrice: '',
       totalCost: '',
       status: 'In Stock',
-    }); // Reset form
+    });
   };
 
   return (
