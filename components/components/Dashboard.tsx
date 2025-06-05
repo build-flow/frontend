@@ -3,8 +3,19 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import './Dashboard.css';
+import { useParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getProject } from '@/data/queries';
 
 function Dashboard() {
+  const params = useParams();
+  const projectId = params.projectId as string
+
+  const { data: project } = useQuery({
+    queryKey: ['project', projectId],
+    queryFn: () => getProject(projectId)
+  });
+
   const [view, setView] = useState('calendar');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -16,12 +27,6 @@ function Dashboard() {
     endDate: '',
   });
   const [units, setUnits] = useState([]);
-
-  useEffect(() => {
-    const fetchUnits = async () => {
-    };
-    fetchUnits();
-  }, []);
 
   const tasks = units.reduce((acc, unit) => {
     const start = new Date(unit.start_date);
@@ -93,6 +98,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
+      <h2 className='capitalize text-2xl font-bold py-4'>{project?.name}</h2>
       <div className="dashboard-actions">
         <button className="add-unit-btn" onClick={openModal}>
           Add Unit
