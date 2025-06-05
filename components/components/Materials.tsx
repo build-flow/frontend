@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
+"use client";
+
+import { useState } from 'react';
+import CreateMaterial from '../CreateMaterial';
 import './Materials.css';
 
-// Bind modal to the app element for accessibility
-Modal.setAppElement('#root');
-
-function Materials() {
   const [materials, setMaterials] = useState([
     {
       name: 'Cement',
@@ -37,8 +35,8 @@ function Materials() {
     },
   ]);
 
+function Materials() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
   const [newMaterial, setNewMaterial] = useState({
     name: '',
     quantity: '',
@@ -49,7 +47,6 @@ function Materials() {
 
   const openModal = () => {
     setModalIsOpen(true);
-    setSuccessMessage(''); // Reset success message when opening modal
   };
 
   const closeModal = () => {
@@ -63,30 +60,6 @@ function Materials() {
     }); // Reset form
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewMaterial((prevMaterial) => {
-      const updatedMaterial = { ...prevMaterial, [name]: value };
-      // Calculate total cost if quantity or unitPrice changes
-      if (name === 'quantity' || name === 'unitPrice') {
-        const quantity = name === 'quantity' ? value : prevMaterial.quantity;
-        const unitPrice = name === 'unitPrice' ? value : prevMaterial.unitPrice;
-        updatedMaterial.totalCost = quantity && unitPrice ? quantity * unitPrice : '';
-      }
-      return updatedMaterial;
-    });
-  };
-
-  const handleSaveMaterial = () => {
-    // Add the new material to the materials list
-    setMaterials((prevMaterials) => [...prevMaterials, newMaterial]);
-    setSuccessMessage('Saved successfully');
-    setTimeout(() => {
-      closeModal();
-      setSuccessMessage('');
-    }, 1000); // Close modal after 1 second
-  };
-
   return (
     <div className="materials">
       <div className="materials-header">
@@ -97,77 +70,10 @@ function Materials() {
       </div>
 
       {/* Modal for Adding a Material */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        className="modal"
-        overlayClassName="modal-overlay"
-      >
-        <h2>Add New Material</h2>
-        <div className="modal-form">
-          <div className="form-group">
-            <label htmlFor="name">Material Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={newMaterial.name}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="quantity">Quantity</label>
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              value={newMaterial.quantity}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="unitPrice">Unit Price</label>
-            <input
-              type="number"
-              id="unitPrice"
-              name="unitPrice"
-              value={newMaterial.unitPrice}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="totalCost">Total Cost</label>
-            <input
-              type="number"
-              id="totalCost"
-              name="totalCost"
-              value={newMaterial.totalCost}
-              readOnly
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="status">Status</label>
-            <select
-              id="status"
-              name="status"
-              value={newMaterial.status}
-              onChange={handleInputChange}
-            >
-              <option value="In Stock">In Stock</option>
-              <option value="Out of Stock">Out of Stock</option>
-            </select>
-          </div>
-          <div className="modal-buttons">
-            <button className="save-btn" onClick={handleSaveMaterial}>
-              Save
-            </button>
-            <button className="cancel-btn" onClick={closeModal}>
-              Cancel
-            </button>
-          </div>
-          {successMessage && <p className="success-message">{successMessage}</p>}
-        </div>
-      </Modal>
+      <CreateMaterial
+        closeModal={closeModal}
+        shown={modalIsOpen}
+      />
 
       <table className="materials-table">
         <thead>

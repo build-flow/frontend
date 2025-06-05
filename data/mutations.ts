@@ -30,7 +30,7 @@ export async function createPayment(companyId: string, data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Payment failed');
   }
 }
 
@@ -44,7 +44,7 @@ export async function createWorker(data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Error creating worker');
   }
 }
 
@@ -58,7 +58,7 @@ export async function createMaterial(data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Error creating material');
   }
 }
 
@@ -72,7 +72,7 @@ export async function createProject(data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error('Error creating project!')
   }
 }
 
@@ -86,7 +86,7 @@ export async function updateProject(projectId: string, data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Error updating project');
   }
 }
 
@@ -100,7 +100,7 @@ export async function attachWorker(projectId: string, data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Error attaching worker');
   }
 }
 
@@ -114,7 +114,7 @@ export async function attachMaterial(projectId: string, data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Error attaching material');
   }
 }
 
@@ -128,7 +128,7 @@ export async function updateWorker(idNumber: string, data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Error updating worker');
   }
 }
 
@@ -142,6 +142,6 @@ export async function updateMaterial(materialId: string, data: any) {
     });
     return response.data;
   } catch (error) {
-    console.error(error)
+    throw new Error(error.response?.data?.message || 'Error updating material');
   }
 }

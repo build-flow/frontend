@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import './Workers.css';
 
-// Bind modal to the app element for accessibility
-Modal.setAppElement('#root');
 
 function Workers() {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      Modal.setAppElement('#__next');
+    }
+  }, []);
   const [workers, setWorkers] = useState([
     {
       name: 'John Doe',

@@ -6,11 +6,12 @@ import './Projects.css';
 import { getToken } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
+import CreateProject from '../CreateProject';
 
 function Projects() {
   const [completedProjects, setCompletedProjects] = useState([]);
   const [inProgressProjects, setInProgressProjects] = useState([]);
-  const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const token = getToken();
 
@@ -21,16 +22,19 @@ function Projects() {
   }, [token]);
 
   return (
-    <div className="projects">
-      <h2 className="projects-title">Projects</h2>
-      {error && <p className="error-message">{error}</p>}
-
-      <div className='my-4'>
-        <Button>
+    <div className="p-10 max-w-[1200px]">
+      <h2 className="text-2xl font-bold">Projects</h2>
+      <div className='flex flex-col justify-center'>
+      <div className='my-4 flex justify-center'>
+        <Button className='flex items-center' onClick={() => setShowModal(true)}>
           Create Project
           <FaPlus />
         </Button>
       </div>
+      <CreateProject
+        shown={showModal}
+        close={() => setShowModal(false)}
+      />
       <div className="projects-section">
         <h3 className="section-title">Completed Projects</h3>
         <div className="projects-list">
@@ -63,6 +67,7 @@ function Projects() {
             <p>No projects in progress.</p>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

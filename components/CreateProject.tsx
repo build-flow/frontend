@@ -3,13 +3,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 type CreateProjectProps = {
   close: () => void;
-  companyId: string;
   parentId?: string | null;
-  onCreate?: (project: any) => void;
+  shown: boolean
 };
 
 const initialState: z.infer<typeof createProjectSchema> = {
@@ -32,7 +32,7 @@ const createProjectSchema = z.object({
   parent_id: z.string().nullable().optional(),
 });
 
-const CreateProject = ({ close }: CreateProjectProps) => {
+const CreateProject = ({ close, shown }: CreateProjectProps) => {
   const {
     reset,
     register,
@@ -47,19 +47,35 @@ const CreateProject = ({ close }: CreateProjectProps) => {
 
   const { mutate } = useMutation({
     mutationKey: ['project'],
-    mutationFn: (data: any) => createProject(data)
+    mutationFn: (data: any) => createProject(data),
+    onSuccess: () => {
+      reset();
+      toast.success('Project created successfully!');
+      close();
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Error creating project');
+    }
   });
 
   const onSubmit = () => {
+    const companyId = localStorage.getItem('companyId')
     const data = getValues();
+    data.company_id = companyId
     mutate(data);
   };
 
-  return (
-    <div onClick={close}>
-      <div onClick={(e) => e.stopPropagation}>
+  return shown ? (
+    <div
+      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+      onClick={close}
+    >
+      <div
+        className="bg-white rounded-lg shadow-lg p-8 min-w-[320px] w-full max-w-md max-h-[90vh] overflow-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 className="text-xl font-bold mb-4">Create Project</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <div>
             <label className="block mb-1 font-medium" htmlFor="name">
               Name
@@ -180,7 +196,7 @@ const CreateProject = ({ close }: CreateProjectProps) => {
         </form>
       </div>
     </div>
-  );
+  ) : null;
 }
 
 export default CreateProject;
