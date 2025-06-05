@@ -1,25 +1,35 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { FaBuilding, FaPlus } from 'react-icons/fa';
-import './Projects.css';
-import { getToken } from '@/lib/utils';
+import { getCompanyProjects } from '@/data/queries';
+import { getCompanyId, getToken } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { Button } from '../ui/button';
+import { useEffect, useState } from 'react';
+import { FaBuilding, FaPlus } from 'react-icons/fa';
 import CreateProject from '../CreateProject';
+import { Button } from '../ui/button';
+import './Projects.css';
 
 function Projects() {
-  const [completedProjects, setCompletedProjects] = useState([]);
-  const [inProgressProjects, setInProgressProjects] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const token = getToken();
+  const companyId = getCompanyId();
 
   useEffect(() => {
     if (!token) {
       router.push('/auth/signin')
     }
   }, [token]);
+
+  const { data: projects } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () => getCompanyProjects(companyId)
+  });
+
+  useEffect(() => {
+    console.log("Projects: ", projects)
+  }, [projects])
 
   return (
     <div className="p-10 max-w-[1200px]">
@@ -36,35 +46,21 @@ function Projects() {
         close={() => setShowModal(false)}
       />
       <div className="projects-section">
-        <h3 className="section-title">Completed Projects</h3>
+        <h3 className="section-title">Projects</h3>
         <div className="projects-list">
-          {completedProjects.length > 0 ? (
-            completedProjects.map((project) => (
+          {projects?.length > 0 ? (
+            projects.map((project) => (
               <div
                 key={project.id}
                 className="project-card"
+                onClick={() => router.push(`/app/project/${project.id}`)}
               >
                 <FaBuilding className="project-icon" />
                 <p>{project.name}</p>
               </div>
             ))
           ) : (
-            <p>No completed projects available.</p>
-          )}
-        </div>
-      </div>
-      <div className="projects-section">
-        <h3 className="section-title">Projects in Progress</h3>
-        <div className="projects-list">
-          {inProgressProjects.length > 0 ? (
-            inProgressProjects.map((project) => (
-              <div key={project.id} className="project-card">
-                <FaBuilding className="project-icon" />
-                <p>{project.name}</p>
-              </div>
-            ))
-          ) : (
-            <p>No projects in progress.</p>
+            <p>No projects available.</p>
           )}
         </div>
       </div>

@@ -24,7 +24,7 @@ function Login() {
     mutationFn: (data: any) => login(data),
     onSuccess: (data: any) => {
       setToken(data.access_token);
-      localStorage.setItem('companyId', data.company_id);
+      localStorage.setItem('companyId', data.company.id);
       toast.success("Login Successful!");
       router.push('/app');
     },

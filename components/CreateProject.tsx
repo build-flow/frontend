@@ -1,6 +1,7 @@
 import { createProject } from '@/data/mutations';
+import { getCompanyId } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -28,7 +29,7 @@ const createProjectSchema = z.object({
   end_date: z.string().min(1, "End date is required"),
   completion_date: z.string().optional().or(z.literal("")),
   completed: z.boolean().default(false),
-  company_id: z.string().min(1, "Company ID is required"),
+  company_id: z.string().optional(),
   parent_id: z.string().nullable().optional(),
 });
 
@@ -45,13 +46,16 @@ const CreateProject = ({ close, shown }: CreateProjectProps) => {
     resolver: zodResolver(createProjectSchema)
   });
 
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
-    mutationKey: ['project'],
+    mutationKey: ['projects'],
     mutationFn: (data: any) => createProject(data),
     onSuccess: () => {
       reset();
       toast.success('Project created successfully!');
       close();
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
     onError: (error: any) => {
       toast.error(error.message || 'Error creating project');
@@ -59,7 +63,7 @@ const CreateProject = ({ close, shown }: CreateProjectProps) => {
   });
 
   const onSubmit = () => {
-    const companyId = localStorage.getItem('companyId')
+    const companyId = getCompanyId();
     const data = getValues();
     data.company_id = companyId
     mutate(data);
@@ -133,35 +137,6 @@ const CreateProject = ({ close, shown }: CreateProjectProps) => {
             />
             {errors.completion_date && (
               <span className="text-sm text-red-600">{errors.completion_date.message as string}</span>
-            )}
-          </div>
-          <div>
-            <label className="block mb-1 font-medium" htmlFor="company_id">
-              Company ID
-            </label>
-            <input
-              className="w-full border rounded px-3 py-2"
-              type="text"
-              id="company_id"
-              {...register("company_id")}
-              required
-            />
-            {errors.company_id && (
-              <span className="text-sm text-red-600">{errors.company_id.message as string}</span>
-            )}
-          </div>
-          <div>
-            <label className="block mb-1 font-medium" htmlFor="parent_id">
-              Parent ID
-            </label>
-            <input
-              className="w-full border rounded px-3 py-2"
-              type="text"
-              id="parent_id"
-              {...register("parent_id")}
-            />
-            {errors.parent_id && (
-              <span className="text-sm text-red-600">{errors.parent_id.message as string}</span>
             )}
           </div>
           <div className="flex items-center gap-2">

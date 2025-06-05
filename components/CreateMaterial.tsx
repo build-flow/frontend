@@ -6,7 +6,7 @@ type props = {
 }
 
 const CreateMaterial = ({ closeModal, shown } : props) => {
-  return (
+  return shown && (
     <div
       className='flex justify-center items-center fixed inset-0 z-50'
       onClick={closeModal}

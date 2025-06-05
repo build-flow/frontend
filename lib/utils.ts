@@ -18,3 +18,10 @@ export function setToken(token: string) {
   }
   return "";
 }
+
+export function getCompanyId() {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("companyId") || "";
+  }
+  return "";
+}

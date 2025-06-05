@@ -80,7 +80,7 @@ export async function getCompanyProjects(companyId: string) {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error(error)
   }
