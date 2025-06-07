@@ -1,49 +1,21 @@
 "use client";
 
+import { getProjectMaterials } from '@/data/queries';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import CreateMaterial from '../CreateMaterial';
 import './Materials.css';
 
-
 function Materials() {
-  const [materials, setMaterials] = useState([
-    {
-      name: 'Cement',
-      quantity: 50,
-      unitPrice: 10,
-      totalCost: 500,
-      status: 'In Stock',
-    },
-    {
-      name: 'Steel Bars',
-      quantity: 20,
-      unitPrice: 25,
-      totalCost: 500,
-      status: 'Out of Stock',
-    },
-    {
-      name: 'Wood Planks',
-      quantity: 100,
-      unitPrice: 5,
-      totalCost: 500,
-      status: 'In Stock',
-    },
-    {
-      name: 'Paint',
-      quantity: 30,
-      unitPrice: 15,
-      totalCost: 450,
-      status: 'In Stock',
-    },
-  ]);
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [newMaterial, setNewMaterial] = useState({
-    name: '',
-    quantity: '',
-    unitPrice: '',
-    totalCost: '',
-    status: 'In Stock', // Default status
+
+  const params = useParams();
+  const projectId = params.projectId as string
+
+  const { data: materials } = useQuery({
+    queryKey: ['materials'],
+    queryFn: () => getProjectMaterials(projectId)
   });
 
   const openModal = () => {
@@ -52,13 +24,6 @@ function Materials() {
 
   const closeModal = () => {
     setModalIsOpen(false);
-    setNewMaterial({
-      name: '',
-      quantity: '',
-      unitPrice: '',
-      totalCost: '',
-      status: 'In Stock',
-    });
   };
 
   return (
@@ -74,6 +39,7 @@ function Materials() {
       <CreateMaterial
         closeModal={closeModal}
         shown={modalIsOpen}
+        projectId={projectId}
       />
 
       <table className="materials-table">
@@ -83,24 +49,15 @@ function Materials() {
             <th>Quantity</th>
             <th>Unit Price</th>
             <th>Total Cost</th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {materials.map((material, index) => (
+          {Array.isArray(materials) && materials?.map((material, index) => (
             <tr key={index}>
               <td>{material.name}</td>
               <td>{material.quantity}</td>
-              <td>${material.unitPrice}</td>
-              <td>${material.totalCost}</td>
-              <td>
-                <span
-                  className={`status ${material.status === 'In Stock' ? 'in-stock' : 'out-of-stock'
-                    }`}
-                >
-                  {material.status}
-                </span>
-              </td>
+              <td>KSH. {material.price}</td>
+              <td>KSH. {material.total}</td>
             </tr>
           ))}
         </tbody>
