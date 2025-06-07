@@ -1,21 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
-import './Workers.css';
+import { useState } from 'react';
 import CreateWorker from '../CreateWorker';
+import { Button } from '../ui/button';
+import './Workers.css';
+import { useQuery } from '@tanstack/react-query';
+import { getCompanyWorkers } from '@/data/queries';
+import { getCompanyId } from '@/lib/utils';
 
 
 function Workers() {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [newWorker, setNewWorker] = useState({
-    name: '',
-    role: '',
-    contact: '',
-    assignedUnits: '',
-    status: 'Active',
+  const companyId = getCompanyId();
+  const { data: workers } = useQuery({
+    queryKey: ['workers'],
+    queryFn: () => getCompanyWorkers(companyId)
   });
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -25,45 +26,41 @@ function Workers() {
     setModalIsOpen(false);
   };
 
-
   return (
     <div className="workers">
       <div className="workers-header">
         <h2 className="workers-title">Workers</h2>
-        <button className="add-worker-btn" onClick={openModal}>
+        <Button className="add-worker-btn" onClick={openModal}>
           Add Worker
-        </button>
+        </Button>
       </div>
 
       {/* Modal for Adding a Worker */}
-      <CreateWorker closeModal={closeModal} shown={modalIsOpen} />
-      
+      <CreateWorker
+        closeModal={closeModal}
+        shown={modalIsOpen}
+      />
+
       <table className="workers-table">
         <thead>
           <tr>
-            <th>Worker Name</th>
-            <th>Role</th>
-            <th>Contact</th>
-            <th>Assigned Units</th>
-            <th>Status</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Wage</th>
+            <th>Rate</th>
+            <th>ID Number</th>
           </tr>
         </thead>
         <tbody>
-          {workers.map((worker, index) => (
+          {workers?.map((worker, index) => (
             <tr key={index}>
-              <td>{worker.name}</td>
-              <td>{worker.role}</td>
-              <td>{worker.contact}</td>
-              <td>{worker.assignedUnits}</td>
-              <td>
-                <span
-                  className={`status ${
-                    worker.status === 'Active' ? 'active' : 'inactive'
-                  }`}
-                >
-                  {worker.status}
-                </span>
-              </td>
+              <td>{worker?.first_name}</td>
+              <td>{worker?.last_name}</td>
+              <td>{worker?.phone_number}</td>
+              <td>{worker?.wage}</td>
+              <td>{worker?.rate}</td>
+              <td>{worker?.id_number}</td>
             </tr>
           ))}
         </tbody>

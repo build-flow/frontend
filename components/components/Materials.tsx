@@ -4,6 +4,8 @@ import { useState } from 'react';
 import CreateMaterial from '../CreateMaterial';
 import './Materials.css';
 
+
+function Materials() {
   const [materials, setMaterials] = useState([
     {
       name: 'Cement',
@@ -35,7 +37,6 @@ import './Materials.css';
     },
   ]);
 
-function Materials() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newMaterial, setNewMaterial] = useState({
     name: '',
@@ -94,9 +95,8 @@ function Materials() {
               <td>${material.totalCost}</td>
               <td>
                 <span
-                  className={`status ${
-                    material.status === 'In Stock' ? 'in-stock' : 'out-of-stock'
-                  }`}
+                  className={`status ${material.status === 'In Stock' ? 'in-stock' : 'out-of-stock'
+                    }`}
                 >
                   {material.status}
                 </span>
