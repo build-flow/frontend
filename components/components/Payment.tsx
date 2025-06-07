@@ -4,10 +4,13 @@ import React, { useState } from 'react';
 import './Payment.css';
 import CreatePayroll from '../CreatePayroll';
 import { useQuery } from '@tanstack/react-query';
+import { getPayments } from '@/data/queries';
+import { useParams } from 'next/navigation';
 
 function Payment() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  const params = useParams();
+  const projectId = params.projectId as string
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -18,6 +21,7 @@ function Payment() {
 
   const { data: payments } = useQuery({
     queryKey: ['payments'],
+    queryFn: () => getPayments(projectId)
   });
 
   return (
@@ -35,30 +39,18 @@ function Payment() {
         <thead>
           <tr>
             <th>Worker Name</th>
-            <th>Role</th>
-            <th>Hours Worked</th>
-            <th>Rate per Hour</th>
-            <th>Total Pay</th>
-            <th>Status</th>
+            <th>Phone Number</th>
+            <th>Amount</th>
+            <th>Channel</th>
           </tr>
         </thead>
         <tbody>
           {Array.isArray(payments) && payments?.map((payment, index) => (
             <tr key={index}>
-              <td>{payment.workerName}</td>
-              <td>{payment.role}</td>
-              <td>{payment.hoursWorked}</td>
-              <td>${payment.ratePerHour}</td>
-              <td>${payment.totalPay}</td>
-              <td>
-                <span
-                  className={`status ${
-                    payment.status === 'Paid' ? 'paid' : 'pending'
-                  }`}
-                >
-                  {payment.status}
-                </span>
-              </td>
+              <td>{payment.worker.first_name}</td>
+              <td>{payment.worker.phone_number}</td>
+              <td>KSH. {payment.amount}</td>
+              <td>{payment.channel}</td>
             </tr>
           ))}
         </tbody>

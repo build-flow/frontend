@@ -16,6 +16,21 @@ export async function getCompany() {
   }
 }
 
+export async function getPayments(projectId: string) {
+  try {
+    const token = getToken();
+    const response = await axios.get(`${API_URL}/projects/${projectId}/payments`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+
 export async function logout() {
   try {
     const token = getToken();
