@@ -1,46 +1,81 @@
 "use client";
 
-import React, { useState } from 'react';
+import { getCompany, logout } from '@/data/queries';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import './Profile.css';
+import { Button } from '../ui/button';
+import { useRouter } from 'next/navigation';
+import { clearToken } from '@/lib/utils';
 
 function Profile() {
-  const [profile, setProfile] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 234 567 890',
-    address: '123 Main St, City, Country',
+  const router = useRouter()
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => getCompany()
   });
 
-  const [successMessage, setSuccessMessage] = useState('');
+  const defaultValues = {
+    company_name: profile?.company_name || "",
+    email: profile?.email || "",
+    phone_number: profile?.phone_number || "",
+  }
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      [name]: value,
-    }));
-  };
+  const {
+    reset,
+    handleSubmit,
+    register,
+    getValues,
+    formState: { isValid, isSubmitting }
+  } = useForm({
+    mode: "onChange",
+    defaultValues: defaultValues,
+    //resolver: zodResolver(profileSchema)
+  });
 
-  const handleUpdate = () => {
-    // Simulate saving the profile (e.g., to a backend)
-    setSuccessMessage('Profile updated successfully');
-    setTimeout(() => {
-      setSuccessMessage('');
-    }, 2000); // Hide message after 2 seconds
-  };
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationKey: ['materials'],
+    //mutationFn: (data: any) => createMaterial(data),
+    onSuccess: () => {
+      reset(),
+      toast.success('Profile updated successfully'),
+      queryClient.invalidateQueries({ queryKey: ['profile'] })
+    },
+    onError: (error) => {
+      toast.error(`${error}`)
+    }
+  });
+
+  function onSubmit() {
+    const data = getValues()
+    //mutate(data)
+  }
+
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
+
+  function handleLogout() {
+    logout();
+    router.push('/auth/signin');
+    clearToken();
+  }
 
   return (
     <div className="flex p-4 flex-col justify-center items-center">
       <h2 className="profile-title">Profile</h2>
-      <div className="profile-form">
+      <form onSubmit={handleSubmit(onSubmit)} className="profile-form">
         <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
             type="text"
             id="name"
-            name="name"
-            value={profile.name}
-            onChange={handleInputChange}
+            {...register("company_name")}
+            value={profile?.company_name}
           />
         </div>
         <div className="form-group">
@@ -48,9 +83,8 @@ function Profile() {
           <input
             type="email"
             id="email"
-            name="email"
-            value={profile.email}
-            onChange={handleInputChange}
+            {...register("email")}
+            value={profile?.email}
           />
         </div>
         <div className="form-group">
@@ -58,26 +92,14 @@ function Profile() {
           <input
             type="text"
             id="phone"
-            name="phone"
-            value={profile.phone}
-            onChange={handleInputChange}
+            {...register("phone_number")}
+            value={profile?.phone_number}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="address">Address</label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value={profile.address}
-            onChange={handleInputChange}
-          />
-        </div>
-        <button className="update-btn" onClick={handleUpdate}>
-          Update
-        </button>
-        {successMessage && <p className="success-message">{successMessage}</p>}
-      </div>
+        <Button variant='destructive' onClick={handleLogout}>
+          Logout
+        </Button>
+      </form>
     </div>
   );
 }

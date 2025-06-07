@@ -12,6 +12,13 @@ export function getToken() {
   return "";
 }
 
+export function clearToken() {
+  if (typeof window !== "undefined") {
+    return localStorage.removeItem("access_token");
+  }
+  return "";
+}
+
 export function setToken(token: string) {
   if (typeof window !== "undefined") {
     return localStorage.setItem("access_token", token);
